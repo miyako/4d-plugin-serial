@@ -5,7 +5,9 @@ Simple [ORSSerialPort](https://github.com/armadsen/ORSSerialPort) wrapper
 
 | carbon | cocoa | win32 | win64 |
 |:------:|:-----:|:---------:|:---------:|
-|<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|||
+||<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|||
+
+Because ORSSerialPort uses [Automatic Reference Counting](https://developer.apple.com/library/content/documentation/Darwin/Conceptual/64bitPorting/indications/indications.html#//apple_ref/doc/uid/TP40001064-CH206-TPXREF101), 320bit is not supported.
 
 ### Version
 
