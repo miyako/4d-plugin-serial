@@ -77,7 +77,7 @@ DTR : BOOL
 CTS : BOOL
 DSR : BOOL
 DCD : BOOL
-
+//device info
 name : string
 path : string
 isOpen : BOOL
