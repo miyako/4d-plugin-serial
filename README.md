@@ -17,6 +17,6 @@ ORSSerialPort is a simple, modern, serial port library.
 
 Find a USB to RS-232C converter and install its driver.
 
-In my test I used RATOC [REX-USB60F](http://www.ratocsystems.com/products/subpage/convert/usb60f_siyou.html). It works on macOS 10.11 but [not 10.13](http://www.ratocsystems.com/services/driver/rs232c.html).
+In my tests I used RATOC [REX-USB60F](http://www.ratocsystems.com/products/subpage/convert/usb60f_siyou.html). It works on macOS 10.11 but [not 10.13](http://www.ratocsystems.com/services/driver/rs232c.html).
 
 
