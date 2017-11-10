@@ -97,7 +97,6 @@ usesRTSCTSFlowControl : BOOL
 usesDTRDSRFlowControl : BOOL
 usesDCDOutputFlowControl : BOOL
 shouldEchoReceivedData : BOOL
-shouldEchoReceivedData : BOOL
 ```
 
 * Signature for callback method
