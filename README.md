@@ -97,3 +97,11 @@ usesDCDOutputFlowControl : BOOL
 shouldEchoReceivedData : BOOL
 shouldEchoReceivedData : BOOL
 ```
+
+* Signature for callback method
+
+param|type|description
+------------|------|----
+path|TEXT|
+data|BLOB|
+options|TEXT|``JSON``
