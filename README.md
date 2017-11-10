@@ -50,6 +50,7 @@ param|type|description
 path|TEXT|
 method|TEXT|callback to execute when data is received
 options|TEXT| ``JSON``
+userInfo|TEXT|
 
 ```
 SERIAL CLOSE PATH (path)
@@ -105,3 +106,4 @@ param|type|description
 path|TEXT|
 data|BLOB|
 options|TEXT|``JSON``
+userInfo|TEXT|
