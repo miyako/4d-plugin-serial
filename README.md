@@ -43,6 +43,8 @@ param|type|description
 ------------|------|----
 paths|ARRAY TEXT|element ``0`` is ``JSON`` description
 
+basically the same as ``$2`` of ``GET SERIAL PORT MAPPING``
+
 ```
 SERIAL OPEN PATH (path;method;options)
 ```
