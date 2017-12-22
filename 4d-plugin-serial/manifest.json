@@ -1,0 +1,1 @@
+﻿{"name":"Serial","id":20000,"commands":[{"theme":"Serial","syntax":"SERIAL GET AVAILABLE PORTS(&Y)"},{"theme":"Serial","syntax":"SERIAL OPEN PATH(&T;&T;&T;&T)"},{"theme":"Serial","syntax":"SERIAL CLOSE PATH(&T)"},{"theme":"Serial","syntax":"SERIAL SEND DATA(&T;&O)"}]}
