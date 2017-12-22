@@ -31,6 +31,10 @@ Find a USB to RS-232C converter and install its driver.
 
 In my tests I used RATOC [REX-USB60F](http://www.ratocsystems.com/products/subpage/convert/usb60f_siyou.html) (FTDI). It works on macOS 10.11 but [not 10.13](http://www.ratocsystems.com/services/driver/rs232c.html).
 
+### Build Information
+
+``ORSSerialPortManager`` is changed from ``CFRunLoopGetCurrent`` to ``CFRunLoopGetMain`` to process notifications. (alternatively the shared instance could be created via ``PA_RunInMainProcess``
+
 ---
 
 ## Syntax
