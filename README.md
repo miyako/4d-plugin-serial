@@ -85,7 +85,7 @@ the following properties are modifiable:
 ``shouldEchoReceivedData``  
 
 ```
-SERIAL OPEN PATH (path;options;method;context)
+SERIAL OPEN PATH (path{;options{;method{;context}}})
 ```
 
 param|type|description
