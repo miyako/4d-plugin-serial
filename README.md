@@ -74,8 +74,8 @@ shouldEchoReceivedData : BOOL
 
 the following options are modifiable:  
 
-``RTS`` : BOOL  
-``DTR`` : BOOL  
+``RTS``  
+``DTR``  
 ``baudRate`` : ``standard rates (0, 50, 75, 110, 134, 150, 200, 300, 600, 1200, 1800, 2400, 4800, 9600, 19200, 38400, 7200, 14400, 28800, 57600, 76800, 115200, 230400)``  
 ``numberOfStopBits`` : ``1 or 2``  
 ``parity``: ``0 (none), 1 (odd), 2 (even)``  
