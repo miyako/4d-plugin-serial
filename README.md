@@ -41,9 +41,32 @@ SERIAL GET AVAILABLE PORTS (paths)
 
 param|type|description
 ------------|------|----
-paths|ARRAY TEXT|element ``0`` is ``JSON`` description
+paths|ARRAY TEXT|element ``0`` is ``JSON`` array of ``details``
 
-basically the same as ``$2`` of ``GET SERIAL PORT MAPPING``
+``paths`` are basically the same as ``$2`` of ``GET SERIAL PORT MAPPING``
+
+* Properties for ``details``
+
+```
+//pins states
+RTS : BOOL
+DTR : BOOL
+CTS : BOOL
+DSR : BOOL
+DCD : BOOL
+//device info
+name : string
+path : string
+isOpen : BOOL
+//options
+baudRate : number
+numberOfStopBits : number
+parity : number
+usesRTSCTSFlowControl : BOOL
+usesDTRDSRFlowControl : BOOL
+usesDCDOutputFlowControl : BOOL
+shouldEchoReceivedData : BOOL
+```
 
 ```
 SERIAL OPEN PATH (path;method;options)
@@ -72,22 +95,7 @@ param|type|description
 path|TEXT|
 data|BLOB|
 
-* Properties for ``details``
 
-```
-//pins states
-RTS : BOOL
-DTR : BOOL
-CTS : BOOL
-DSR : BOOL
-DCD : BOOL
-//device info
-name : string
-path : string
-isOpen : BOOL
-
-//also all options
-```
 
 * Properties for ``options``
 
