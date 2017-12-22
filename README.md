@@ -85,7 +85,7 @@ the following properties are modifiable:
 ``shouldEchoReceivedData``  
 
 ```
-SERIAL OPEN PATH (path;method;options)
+SERIAL OPEN PATH (path;options;method;context)
 ```
 
 param|type|description
@@ -120,4 +120,4 @@ path|TEXT|
 data|BLOB|
 context|TEXT|
 
-a local process named ``$SERIAL_PORT`` is used to process incoming data. use ``context`` to identify the channel.
+a local process named ``$SERIAL_PORT`` is used to process incoming data. the ``context`` passed to ``SERIAL OPEN PATH`` is available in the callback method.
