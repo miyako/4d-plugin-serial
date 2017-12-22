@@ -45,11 +45,11 @@ SERIAL GET AVAILABLE PORTS (paths)
 
 param|type|description
 ------------|------|----
-paths|ARRAY TEXT|element ``0`` is ``JSON`` array of ``details``
+paths|ARRAY TEXT|element ``0`` is ``JSON`` array of ``options``
 
 ``paths`` are basically the same as ``$2`` of ``GET SERIAL PORT MAPPING``
 
-* Properties for ``details``
+* Properties for ``options``
 
 ```
 //pins states
@@ -72,7 +72,7 @@ usesDCDOutputFlowControl : BOOL
 shouldEchoReceivedData : BOOL
 ```
 
-the following options are modifiable:  
+the following properties are modifiable:  
 
 ``RTS``  
 ``DTR``  
@@ -91,8 +91,9 @@ SERIAL OPEN PATH (path;method;options)
 param|type|description
 ------------|------|----
 path|TEXT|
-method|TEXT|callback to execute when data is received
 options|TEXT| ``JSON``
+method|TEXT|callback to execute when data is received (optional)
+context|TEXT| (optional)
 
 ```
 SERIAL CLOSE PATH (path)
@@ -111,16 +112,10 @@ param|type|description
 path|TEXT|
 data|BLOB|
 
-
-
-* Properties for ``options``
-
-
-
 * Signature for callback method
 
 param|type|description
 ------------|------|----
 path|TEXT|
 data|BLOB|
-options|TEXT|``JSON``
+context|TEXT|
