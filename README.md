@@ -120,4 +120,4 @@ path|TEXT|
 data|BLOB|
 context|TEXT|
 
-a local process named ``$SERIAL_PORT`` is used to process receive events. use ``context`` to identify the channel.
+a local process named ``$SERIAL_PORT`` is used to process incoming data. use ``context`` to identify the channel.
