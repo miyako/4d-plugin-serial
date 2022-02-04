@@ -6,6 +6,8 @@
 # 4d-plugin-serial
 [armadsen/ORSSerialPort 2.1.0](https://github.com/armadsen/ORSSerialPort/releases/tag/2.1.0)を使用しています。
 
+ただし，シリアルポート付け外しの通知を受け取るため，``CFRunLoopGetCurrent``を``CFRunLoopGetMain``に書き換えてビルドしました。
+
 ## Discussion
 
 The native command ``RECEIVE BUFFER`` does not support BLOB.
