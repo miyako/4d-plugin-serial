@@ -53,6 +53,12 @@ status:=SERIAL Open path(path{;options})
 status:=SERIAL Close path(path)
 ```
 
+## SERIAL Send data
+
+```4d
+status:=SERIAL Send data(path)
+```
+
 ## Discussion
 
 The native command ``RECEIVE BUFFER`` does not support BLOB.
