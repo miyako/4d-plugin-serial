@@ -72,5 +72,5 @@ ORSSerialPort is a simple, modern, serial port library.
 |[REX-USB60F](http://www.ratocsystems.com/products/subpage/convert/usb60f_siyou.html)|[FTDI](https://ftdichip.com/drivers/vcp-drivers/)|Catalina|17||
 ||||18||
 ||||19||
-|||Monterey|19||
-
+|||Monterey x86_64|19||
+|||Monterey arm64|19||
