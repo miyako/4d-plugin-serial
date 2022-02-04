@@ -8,7 +8,7 @@
 
 ただし，シリアルポート付け外しの通知を受け取るため，``CFRunLoopGetCurrent``を``CFRunLoopGetMain``に書き換えてビルドしました。
 
-## SCARD Get readers
+## SERIAL Get available ports
 
 ```4d
 ports:=SERIAL Get available ports()
