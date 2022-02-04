@@ -47,6 +47,10 @@ status:=SERIAL Open path(path{;options})
 |status.success|Boolean||
 |status.port|Object||
 
+シリアル通信コールバック実行用のプロセス`$SERIAL`が起動します。
+
+<img width="852" alt="process" src="https://user-images.githubusercontent.com/1725068/152618331-55247ca8-ac9f-42e9-881d-3050dacec386.png">
+
 ## SERIAL Close path
 
 ```4d
