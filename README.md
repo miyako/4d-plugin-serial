@@ -35,6 +35,24 @@ ports:=SERIAL Get available ports()
 |ports[].usesDTRDSRFlowControl|Boolean||
 |ports[].usesRTSCTSFlowControl|Boolean||
 
+## SERIAL Open path
+
+```4d
+status:=SERIAL Open path(path{;options})
+```
+
+|パラメーター|データ型|説明|
+|-|-|-|
+|status|Object||
+|status.success|Boolean||
+|status.port|Object||
+
+## SERIAL Close path
+
+```4d
+status:=SERIAL Close path(path{;options})
+```
+
 ## Discussion
 
 The native command ``RECEIVE BUFFER`` does not support BLOB.
