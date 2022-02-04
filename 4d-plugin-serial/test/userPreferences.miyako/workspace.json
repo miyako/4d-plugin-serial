@@ -1,0 +1,25 @@
+{
+	"editors": [
+		{
+			"type": "method",
+			"id": 2147483646,
+			"previousTabType": "method",
+			"previousTabID": 2147483647,
+			"codeDescriptor": {
+				"type": 1,
+				"methodName": "serial_receive_method"
+			}
+		},
+		{
+			"type": "method",
+			"id": 2147483647,
+			"codeDescriptor": {
+				"type": 1,
+				"methodName": "LIST"
+			}
+		},
+		{
+			"type": "explorer"
+		}
+	]
+}
