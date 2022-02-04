@@ -70,7 +70,7 @@ ORSSerialPort is a simple, modern, serial port library.
 |USB⇄RS-232Cコンバーター|チップ|macOS|対応|
 |-|-|-|:-:|
 |[REX-USB60F](http://www.ratocsystems.com/products/subpage/convert/usb60f_siyou.html)|FTDI|10.11|OK|
-|||10.13|NG|
-|||10.15|NG|
-|||12 Silicon|NG|
+|||10.13|×|
+|||10.15|×|
+|||12 Silicon|×|
 
