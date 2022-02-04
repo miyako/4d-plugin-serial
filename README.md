@@ -1,17 +1,10 @@
+![version](https://img.shields.io/badge/version-18%2B-EB8E5F)
+![platform](https://img.shields.io/static/v1?label=platform&message=mac-intel%20|%20mac-arm&color=blue)
+[![license](https://img.shields.io/github/license/miyako/4d-plugin-serial)](LICENSE)
+![downloads](https://img.shields.io/github/downloads/miyako/4d-plugin-serial/total)
+
 # 4d-plugin-serial
-Simple [ORSSerialPort](https://github.com/armadsen/ORSSerialPort) wrapper
-
-### Platform
-
-| carbon | cocoa | win32 | win64 |
-|:------:|:-----:|:---------:|:---------:|
-||<img src="https://cloud.githubusercontent.com/assets/1725068/22371562/1b091f0a-e4db-11e6-8458-8653954a7cce.png" width="24" height="24" />|||
-
-Because ORSSerialPort uses [Automatic Reference Counting](https://developer.apple.com/library/content/documentation/Darwin/Conceptual/64bitPorting/indications/indications.html#//apple_ref/doc/uid/TP40001064-CH206-TPXREF101), 32-bit is not supported.
-
-### Version
-
-<img src="https://cloud.githubusercontent.com/assets/1725068/18940649/21945000-8645-11e6-86ed-4a0f800e5a73.png" width="32" height="32" /> <img src="https://cloud.githubusercontent.com/assets/1725068/18940648/2192ddba-8645-11e6-864d-6d5692d55717.png" width="32" height="32" />
+[armadsen/ORSSerialPort 2.1.0](https://github.com/armadsen/ORSSerialPort/releases/tag/2.1.0)を使用しています。
 
 ## Discussion
 
