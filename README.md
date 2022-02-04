@@ -53,11 +53,21 @@ status:=SERIAL Open path(path{;options})
 status:=SERIAL Close path(path)
 ```
 
+|パラメーター|データ型|説明|
+|-|-|-|
+|status|Object||
+|status.success|Boolean||
+
 ## SERIAL Send data
 
 ```4d
 status:=SERIAL Send data(path)
 ```
+
+|パラメーター|データ型|説明|
+|-|-|-|
+|status|Object||
+|status.success|Boolean||
 
 ## Discussion
 
