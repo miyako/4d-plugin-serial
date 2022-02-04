@@ -8,6 +8,33 @@
 
 ただし，シリアルポート付け外しの通知を受け取るため，``CFRunLoopGetCurrent``を``CFRunLoopGetMain``に書き換えてビルドしました。
 
+## SCARD Get readers
+
+```4d
+ports:=SERIAL Get available ports()
+```
+
+|パラメーター|データ型|説明|
+|-|-|-|
+|ports[]|Collection|シリアルポート|
+|ports[]|Collection||
+|ports[].allowsNonStandardBaudRates|Boolean||
+|ports[].baudRate|Number||
+|ports[].CTS|Boolean||
+|ports[].DCD|Boolean||
+|ports[].DSR|Boolean||
+|ports[].DTR|Boolean||
+|ports[].isOpen|Boolean||
+|ports[].name|Text||
+|ports[].numberOfStopBits|Number||
+|ports[].parity|Text|`none` `odd` `even`|
+|ports[].path|Text||
+|ports[].RTS|Boolean||
+|ports[].shouldEchoReceivedData|Boolean||
+|ports[].usesDCDOutputFlowControl|Boolean||
+|ports[].usesDTRDSRFlowControl|Boolean||
+|ports[].usesRTSCTSFlowControl|Boolean||
+
 ## Discussion
 
 The native command ``RECEIVE BUFFER`` does not support BLOB.
