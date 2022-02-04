@@ -50,7 +50,7 @@ status:=SERIAL Open path(path{;options})
 ## SERIAL Close path
 
 ```4d
-status:=SERIAL Close path(path{;options})
+status:=SERIAL Close path(path)
 ```
 
 ## Discussion
