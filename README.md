@@ -63,8 +63,6 @@ status:=SERIAL Open path(path{;options})
 
 ```4d
 #DECLARE($path : Text; $data : Blob)
-
-TRACE
 ```
 
 ## SERIAL Close path
