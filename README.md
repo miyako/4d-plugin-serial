@@ -16,6 +16,34 @@
 
 プラグインは，スリープの開始と解除・シリアルポートの取り外しと取り付けに反応し，バイナリデータを扱うことができます。
 
+## 例題
+
+```4d
+$ports:=SERIAL Get available ports
+
+$usbserial:=$ports.query("path == :1"; "/dev/cu.usbserial@")
+
+If ($usbserial.length#0)
+	
+	$path:=$usbserial[0].path
+	
+	$options:=New object
+	
+	$status:=SERIAL Open path($path; $options; "serial_receive_method")
+	
+	var $data : Blob
+	
+	SET BLOB SIZE($data; 10)
+	
+	$status:=SERIAL Send data($path; $data)
+	
+	$status:=SERIAL Close path($path)
+	
+End if 
+```
+
+---
+
 ## SERIAL Get available ports
 
 ```4d
