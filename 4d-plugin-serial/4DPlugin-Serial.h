@@ -30,27 +30,8 @@ typedef PA_long32 process_stack_size_t;
 typedef PA_long32 method_id_t;
 typedef PA_Unichar* process_name_t;
 
-#if VERSIONMAC
 #import "ORSSerialPort.h"
 #import "ORSSerialPortManager.h"
-@interface ORSSerialPortHelper : NSObject <ORSSerialPortDelegate>
-
-@property(atomic, copy) NSString *callbackMethodName;
-@property(atomic, copy) NSString *callbackMethodContext;
-
-@end
-
-@interface ORSSerialPortObserver : NSObject
-{
-
-}
-
-- (void)serialPortsWereConnected:(NSNotification *)notification;
-- (void)serialPortsWereDisconnected:(NSNotification *)notification;
-
-@end
-
-#endif
 
 #pragma mark -
 
@@ -58,5 +39,48 @@ void SERIAL_GET_AVAILABLE_PORTS(PA_PluginParameters params);
 void SERIAL_OPEN_PATH(PA_PluginParameters params);
 void SERIAL_CLOSE_PATH(PA_PluginParameters params);
 void SERIAL_SEND_DATA(PA_PluginParameters params);
+
+#pragma mark -
+
+static bool IsProcessOnExit();
+static void OnStartup();
+static void OnCloseProcess();
+
+typedef PA_long32 process_number_t;
+typedef PA_long32 process_stack_size_t;
+typedef PA_long32 method_id_t;
+typedef PA_Unichar* process_name_t;
+
+void listenerLoop(void);
+
+@interface ORSSerialPortHelper : NSObject <ORSSerialPortDelegate>
+
+//@property(atomic, copy) NSString *callbackMethodName;
+//@property(atomic, copy) NSString *callbackMethodContext;
+
+@end
+
+@interface ORSSerialPortObserver : NSObject
+{
+//    NSMutableArray<NSData *>*data_array;
+//    NSMutableArray<NSString *>*method_array;
+//    NSMutableArray<NSString *>*context_array;
+//    NSMutableArray<NSString *>*path_array;
+}
+
+//@property(readonly) process_stack_size_t stackSize;
+//@property(readonly) NSUInteger length;
+//@property(atomic, readwrite) process_number_t monitorProcessId;
+
+//- (void)start;
+
+//- (void)call4D;
+
+- (void)appendData:(NSData *)data method:(NSString *)method path:(NSString *)path;
+
+- (void)serialPortsWereConnected:(NSNotification *)notification;
+- (void)serialPortsWereDisconnected:(NSNotification *)notification;
+
+@end
 
 #endif /* PLUGIN_SERIAL_H */

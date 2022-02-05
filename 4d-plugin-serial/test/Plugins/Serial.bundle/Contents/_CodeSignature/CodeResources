@@ -19,17 +19,13 @@
 		</data>
 		<key>Resources/manifest.json</key>
 		<data>
-		yCzQP9hb2g4GuBOAjD7KbjALfkI=
+		L0zaXX/YmYDCR6smN7QThvjJCEM=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
 		<key>QuickLook/Thumbnail.png</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			hC+U8EqvyIRM1lLakHLfvl4V9Tc=
-			</data>
 			<key>hash2</key>
 			<data>
 			nGfrvibB5KlzvZgF4Bra+l0HpRloxismgTLePnOwCdk=
@@ -37,10 +33,6 @@
 		</dict>
 		<key>Resources/English.lproj/InfoPlist.strings</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			19emHKCexe4sPqPEi+o7TV/ALDA=
-			</data>
 			<key>hash2</key>
 			<data>
 			1qurfDFOD02A3KrELJkNTPK8IT4ThL+WMjw/eT/KX10=
@@ -50,10 +42,6 @@
 		</dict>
 		<key>Resources/constants.xlf</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			X5ivcamZZimnm7tLQMPlW/Hp9JA=
-			</data>
 			<key>hash2</key>
 			<data>
 			wK7TpVnNvZi+oRjxQf6yVTVyEPmC+EWVCR/vrEhmtX0=
@@ -61,21 +49,13 @@
 		</dict>
 		<key>Resources/manifest.json</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			yCzQP9hb2g4GuBOAjD7KbjALfkI=
-			</data>
 			<key>hash2</key>
 			<data>
-			QDwJ1kRBLnCNfs+NgRqXKpcCjkdUJYSFzbuDOT9agwA=
+			Ez+yXLV3rlZny5ewaXVOpyxbjHwp5xdjrnlSdShAq/w=
 			</data>
 		</dict>
 		<key>Windows/Serial.4DX</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			hL9gqzB1pAgChKZ1uj+Jqt43yxs=
-			</data>
 			<key>hash2</key>
 			<data>
 			ZCCEqtPmUM+2iJDxTvuZrd5mchV7dH5Z4RZvNF7YQT0=
@@ -83,10 +63,6 @@
 		</dict>
 		<key>Windows64/Serial.4DX</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			zvoZ7ULt+O/aKx6NzgaqTillGNg=
-			</data>
 			<key>hash2</key>
 			<data>
 			xZ0isPdvytfz/ISMhvmTet0RKxwRCg6HeDepN7N2icI=

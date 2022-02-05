@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>ORSSerialPort.xcscheme_^#shared#^_</key>
+		<key>orsserialport.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,7 +12,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>D1DB94A227ACE95800B74036</key>
+		<key>D1827C8727AD8C09008E8B10</key>
 		<dict>
 			<key>primary</key>
 			<true/>

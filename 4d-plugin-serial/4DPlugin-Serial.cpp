@@ -12,6 +12,84 @@
 
 ORSSerialPortObserver *serialPortObserver = nil;
 
+NSArray *availablePorts;
+static void *ORSSerialPortAvailablePortsContext = &ORSSerialPortAvailablePortsContext;
+
+@implementation ORSSerialPortObserver
+
+- (id)init
+{
+    if(!(self = [super init])) return self;
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(serialPortsWereConnected:)
+     name:ORSSerialPortsWereConnectedNotification
+     object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(serialPortsWereDisconnected:)
+     name:ORSSerialPortsWereDisconnectedNotification
+     object:nil];
+        
+    NSArray *availablePorts = [[ORSSerialPortManager sharedSerialPortManager]availablePorts];
+    
+    for(NSUInteger i = 0; i < [availablePorts count];++i)
+    {
+        ORSSerialPort *port = [availablePorts objectAtIndex:i];
+        ORSSerialPortHelper *serialPortDelegate = [[ORSSerialPortHelper alloc]init];
+        port.delegate = serialPortDelegate;
+    }
+    
+    return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+        
+    [super dealloc];
+}
+
+#pragma mark -
+
+- (void)serialPortsWereConnected:(NSNotification *)notification
+{
+    NSArray *connectedPorts = [notification userInfo][ORSConnectedSerialPortsKey];
+    NSLog(@"Ports were connected: %@", connectedPorts);
+    
+    for(NSUInteger i = 0; i < [connectedPorts count];++i)
+    {
+        ORSSerialPort *port = [connectedPorts objectAtIndex:i];
+        if(port.delegate)
+        {
+            [port.delegate release];
+        }
+        port.delegate = [[ORSSerialPortHelper alloc]init];
+    }
+}
+
+- (void)serialPortsWereDisconnected:(NSNotification *)notification
+{
+    NSArray *disconnectedPorts = [notification userInfo][ORSDisconnectedSerialPortsKey];
+    NSLog(@"Ports were disconnected: %@", disconnectedPorts);
+    
+    for(NSUInteger i = 0; i < [disconnectedPorts count];++i)
+    {
+        ORSSerialPort *port = [disconnectedPorts objectAtIndex:i];
+        if(port.delegate)
+        {
+            [port.delegate release];
+            port.delegate = nil;
+        }
+    }
+}
+
+@end
+
+#pragma mark -
+
 #define CALLBACK_IN_NEW_PROCESS 0
 #define CALLBACK_SLEEP_TIME 59
 
@@ -38,141 +116,27 @@ namespace SERIAL
     bool PROCESS_SHOULD_RESUME = false;
 }
 
-@implementation ORSSerialPortObserver
-
-- (id)init
-{
-    if(!(self = [super init])) return self;
-    
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(serialPortsWereConnected:)
-     name:ORSSerialPortsWereConnectedNotification
-     object:nil];
-    
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(serialPortsWereDisconnected:)
-     name:ORSSerialPortsWereDisconnectedNotification
-     object:nil];
-    
-    NSArray *availablePorts = [[ORSSerialPortManager sharedSerialPortManager]availablePorts];
-    
-    for(NSUInteger i = 0; i < [availablePorts count];++i)
-    {
-        ORSSerialPort *port = [availablePorts objectAtIndex:i];
-        ORSSerialPortHelper *serialPortDelegate = [[ORSSerialPortHelper alloc]init];
-        port.delegate = serialPortDelegate;
-    }
-    
-    return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
-        
-    [super dealloc];
-}
-
-- (void)serialPortsWereConnected:(NSNotification *)notification
-{
-    NSArray *connectedPorts = [notification userInfo][ORSConnectedSerialPortsKey];
-    
-    NSLog(@"Ports were connected: %@", connectedPorts);
-    
-    for(NSUInteger i = 0; i < [connectedPorts count];++i)
-    {
-        ORSSerialPort *port = [connectedPorts objectAtIndex:i];
-        if(port.delegate)
-        {
-            [port.delegate release];
-        }
-        port.delegate = [[ORSSerialPortHelper alloc]init];
-    }
-}
-
-- (void)serialPortsWereDisconnected:(NSNotification *)notification
-{
-    NSArray *disconnectedPorts = [notification userInfo][ORSDisconnectedSerialPortsKey];
-    
-    NSLog(@"Ports were disconnected: %@", disconnectedPorts);
-    
-    for(NSUInteger i = 0; i < [disconnectedPorts count];++i)
-    {
-        ORSSerialPort *port = [disconnectedPorts objectAtIndex:i];
-        if(port.delegate)
-        {
-            [port.delegate release];
-            port.delegate = nil;
-        }
-    }
-}
-@end
-
-@implementation ORSSerialPortHelper
-
-- (void)serialPort:(ORSSerialPort *)serialPort didReceiveData:(NSData *)data
-{
-    [SERIAL::SERIAL_PATH addObject:[serialPort path]];
-    [SERIAL::SERIAL_DATA addObject:data];
-    listenerLoopExecute();
-}
-
-- (void)serialPortWasRemovedFromSystem:(ORSSerialPort *)serialPort
-{
-    /* serialPortsWereDisconnected follows */
-}
-
-- (void)serialPortWasOpened:(ORSSerialPort *)serialPort
-{
-    NSLog(@"port opened:%@", [serialPort path]);
-}
-
-- (void)serialPortWasClosed:(ORSSerialPort *)serialPort
-{
-    NSLog(@"port closed:%@", [serialPort path]);
-}
-
-- (void)serialPort:(ORSSerialPort *)serialPort didEncounterError:(NSError *)error
-{
-    NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, serialPort, error);
-}
-
-@end
-
-bool IsProcessOnExit()
-{
-    PA_long32 state, time;
-    
-    std::vector<PA_Unichar>buf(33);
-    PA_GetProcessInfo(PA_GetCurrentProcessNumber(), &buf[0], &state, &time);
-    CUTF16String procName(&buf[0]);
-    CUTF16String exitProcName((PA_Unichar *)"$\0x\0x\0\0\0");
-    return (!procName.compare(exitProcName));
-}
-
 static void listener_start() {
-    
+
     if(!serialPortObserver)
     {
         SERIAL::SERIAL_PATH = [[NSMutableArray alloc]init];
         SERIAL::SERIAL_DATA = [[NSMutableArray alloc]init];
-        
+
         serialPortObserver = [[ORSSerialPortObserver alloc]init];
     }
 
 }
 
 static void listener_end() {
-    
+
     if(IsProcessOnExit())
     {
         if(serialPortObserver)
         {
             [SERIAL::SERIAL_PATH release];
             [SERIAL::SERIAL_DATA release];
-            
+
             [serialPortObserver release];
             serialPortObserver = nil;
         }
@@ -181,50 +145,50 @@ static void listener_end() {
 }
 
 static void generateUuid(C_TEXT &returnValue) {
-    
+
     returnValue.setUTF16String([[[NSUUID UUID]UUIDString]stringByReplacingOccurrencesOfString:@"-" withString:@""]);
 }
 
 void listenerLoop() {
-    
+
     if(1)
     {
         std::lock_guard<std::mutex> lock(globalMutex3);
-        
+
         SERIAL::PROCESS_SHOULD_TERMINATE = false;
     }
-    
+
     /* Current process returns 0 for PA_NewProcess */
     PA_long32 currentProcessNumber = PA_GetCurrentProcessNumber();
-    
+
     while(!PA_IsProcessDying())
     {
         PA_YieldAbsolute();
-        
+
         bool PROCESS_SHOULD_RESUME;
         bool PROCESS_SHOULD_TERMINATE;
-        
+
         if(1)
         {
             PROCESS_SHOULD_RESUME = SERIAL::PROCESS_SHOULD_RESUME;
             PROCESS_SHOULD_TERMINATE = SERIAL::PROCESS_SHOULD_TERMINATE;
         }
-        
+
         if(PROCESS_SHOULD_RESUME)
         {
             size_t SERIAL_PATHS;
-            
+
             if(1)
             {
                 std::lock_guard<std::mutex> lock(globalMutex);
-                
+
                 SERIAL_PATHS = [SERIAL::SERIAL_PATH count];
             }
-            
+
             while(SERIAL_PATHS)
             {
                 PA_YieldAbsolute();
-                
+
                 if(CALLBACK_IN_NEW_PROCESS)
                 {
                     C_TEXT processName;
@@ -236,73 +200,73 @@ void listenerLoop() {
                 {
                      listenerLoopExecuteMethod();
                 }
-                
+
                 if(PROCESS_SHOULD_TERMINATE)
                     break;
-                
+
                 if(1)
                 {
                     std::lock_guard<std::mutex> lock(globalMutex);
-                    
+
                     SERIAL_PATHS = [SERIAL::SERIAL_PATH count];
                     PROCESS_SHOULD_TERMINATE = SERIAL::PROCESS_SHOULD_TERMINATE;
                 }
             }
-            
+
             if(1)
             {
                 std::lock_guard<std::mutex> lock(globalMutex4);
-                
+
                 SERIAL::PROCESS_SHOULD_RESUME = false;
             }
-            
+
         }else
         {
             PA_PutProcessToSleep(currentProcessNumber, CALLBACK_SLEEP_TIME);
         }
-        
+
         if(1)
         {
             PROCESS_SHOULD_TERMINATE = SERIAL::PROCESS_SHOULD_TERMINATE;
         }
-        
+
         if(PROCESS_SHOULD_TERMINATE)
             break;
     }
-    
+
     if(1)
     {
         std::lock_guard<std::mutex> lock(globalMutex);
-        
+
         [SERIAL::SERIAL_PATH removeAllObjects];
         [SERIAL::SERIAL_DATA removeAllObjects];
     }
-    
+
     if(1)
     {
         std::lock_guard<std::mutex> lock(globalMutex2);
-        
+
         SERIAL::LISTENER_METHOD.setUTF16String((PA_Unichar *)"\0\0", 0);
     }
 
     if(1)
     {
         std::lock_guard<std::mutex> lock(globalMutex1);
-        
+
         SERIAL::METHOD_PROCESS_ID = 0;
     }
-    
+
     PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_end, NULL);
 
     PA_KillProcess();
 }
 
 void listenerLoopStart() {
-    
+
     if(!SERIAL::METHOD_PROCESS_ID)
     {
         std::lock_guard<std::mutex> lock(globalMutex1);
-        
+
         SERIAL::METHOD_PROCESS_ID = PA_NewProcess((void *)listenerLoop,
                                               SERIAL::MONITOR_PROCESS_STACK_SIZE,
                                               SERIAL::MONITOR_PROCESS_NAME);
@@ -310,18 +274,18 @@ void listenerLoopStart() {
 }
 
 void listenerLoopFinish() {
-    
+
     if(SERIAL::METHOD_PROCESS_ID)
     {
         if(1)
         {
             std::lock_guard<std::mutex> lock(globalMutex3);
-            
+
             SERIAL::PROCESS_SHOULD_TERMINATE = true;
         }
-        
+
         PA_YieldAbsolute();
-        
+
         if(1)
         {
             std::lock_guard<std::mutex> lock(globalMutex4);
@@ -332,18 +296,18 @@ void listenerLoopFinish() {
 }
 
 void listenerLoopExecute() {
-    
+
     if(1)
     {
         std::lock_guard<std::mutex> lock(globalMutex3);
-        
+
         SERIAL::PROCESS_SHOULD_TERMINATE = false;
     }
-    
+
     if(1)
     {
         std::lock_guard<std::mutex> lock(globalMutex4);
-        
+
         SERIAL::PROCESS_SHOULD_RESUME = true;
     }
 
@@ -405,7 +369,18 @@ void listenerLoopExecuteMethod() {
 
 static void OnStartup()
 {
+    PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_start, NULL);
+}
 
+static bool IsProcessOnExit()
+{
+    PA_long32 state, time;
+
+    std::vector<PA_Unichar>buf(33);
+    PA_GetProcessInfo(PA_GetCurrentProcessNumber(), &buf[0], &state, &time);
+    CUTF16String procName(&buf[0]);
+    CUTF16String exitProcName((PA_Unichar *)"$\0x\0x\0\0\0");
+    return (!procName.compare(exitProcName));
 }
 
 static void OnCloseProcess()
@@ -498,21 +473,26 @@ static PA_ObjectRef getPort(ORSSerialPort *port) {
     return  o;
 }
 
+#pragma mark -
+
 void SERIAL_GET_AVAILABLE_PORTS(PA_PluginParameters params) {
 
     PA_CollectionRef ports = PA_CreateCollection();
     
-    NSArray *availablePorts = [[ORSSerialPortManager sharedSerialPortManager]availablePorts];
-    
-    for(NSUInteger i = 0; i < [availablePorts count];++i)
-    {
-        ORSSerialPort *port = [availablePorts objectAtIndex:i];
+    if(!PA_IsProcessDying()) {
         
-        PA_ObjectRef o = getPort(port);
+        NSArray *availablePorts = [[ORSSerialPortManager sharedSerialPortManager]availablePorts];
+        
+        for(NSUInteger i = 0; i < [availablePorts count];++i)
+        {
+            ORSSerialPort *port = [availablePorts objectAtIndex:i];
+            
+            PA_ObjectRef o = getPort(port);
 
-        PA_Variable v = PA_CreateVariable(eVK_Object);
-        PA_SetObjectVariable(&v, o);
-        PA_SetCollectionElement(ports, PA_GetCollectionLength(ports), v);
+            PA_Variable v = PA_CreateVariable(eVK_Object);
+            PA_SetObjectVariable(&v, o);
+            PA_SetCollectionElement(ports, PA_GetCollectionLength(ports), v);
+        }
     }
     
     PA_ReturnCollection(params, ports);
@@ -531,78 +511,76 @@ void SERIAL_OPEN_PATH(PA_PluginParameters params) {
         if(1)
         {
             std::lock_guard<std::mutex> lock(globalMutex2);
-            
+
             SERIAL::LISTENER_METHOD.fromParamAtIndex(pParams, 3);
         }
         
-        PA_RunInMainProcess((PA_RunInMainProcessProcPtr)listener_start, NULL);
-
+        C_TEXT Param1_path;
+        Param1_path.fromParamAtIndex(pParams, 1);
+        NSString *path = Param1_path.copyUTF16String();
+        
+        ORSSerialPort *port = [ORSSerialPort existingPortWithPath:path];
+        
+        if((port) && (!port.isOpen))
+        {
+            PA_ObjectRef options = PA_GetObjectParameter(params, 2);
+            
+            if(options) {
+                
+                if(ob_is_defined(options, L"usesRTSCTSFlowControl")) {
+                    port.usesRTSCTSFlowControl = ob_get_b(options, L"usesRTSCTSFlowControl");
+                }
+                if(ob_is_defined(options, L"usesDTRDSRFlowControl")) {
+                    port.usesDTRDSRFlowControl = ob_get_b(options, L"usesDTRDSRFlowControl");
+                }
+                if(ob_is_defined(options, L"usesDCDOutputFlowControl")) {
+                    port.usesDCDOutputFlowControl = ob_get_b(options, L"usesDCDOutputFlowControl");
+                }
+                if(ob_is_defined(options, L"shouldEchoReceivedData")) {
+                    port.shouldEchoReceivedData = ob_get_b(options, L"shouldEchoReceivedData");
+                }
+                if(ob_is_defined(options, L"RTS")) {
+                    port.RTS = ob_get_b(options, L"RTS");
+                }
+                if(ob_is_defined(options, L"DTR")) {
+                    port.DTR = ob_get_b(options, L"DTR");
+                }
+                if(ob_is_defined(options, L"baudRate")) {
+                    port.baudRate = [NSNumber numberWithInt:ob_get_n(options, L"baudRate")];
+                }
+                if(ob_is_defined(options, L"numberOfStopBits")) {
+                    port.numberOfStopBits = ob_get_n(options, L"numberOfStopBits");
+                }
+                CUTF8String stringValue;
+                if(ob_get_s(options, L"parity", &stringValue)) {
+                    if(stringValue == (const uint8_t *)"none") {
+                        port.parity = ORSSerialPortParityNone;
+                    }
+                    if(stringValue == (const uint8_t *)"odd") {
+                        port.parity = ORSSerialPortParityOdd;
+                    }
+                    if(stringValue == (const uint8_t *)"even") {
+                        port.parity = ORSSerialPortParityEven;
+                    }
+                    
+                }
+                
+            }
+            
+            [port open];
+            
+            success = [port isOpen];
+            
+            PA_ObjectRef o = getPort(port);
+            ob_set_o(status, L"port", o);
+            
+        }/* port */
+        
         listenerLoopStart();
         
+        [path release];
+        
     }
-    
-    C_TEXT Param1_path;
-    Param1_path.fromParamAtIndex(pParams, 1);
-        
-    NSString *path = Param1_path.copyUTF16String();
-
-    ORSSerialPort *port = [ORSSerialPort serialPortWithPath:path];
-    if((port) && (!port.isOpen))
-    {
-        PA_ObjectRef options = PA_GetObjectParameter(params, 2);
-        
-        if(options) {
-            
-            if(ob_is_defined(options, L"usesRTSCTSFlowControl")) {
-                port.usesRTSCTSFlowControl = ob_get_b(options, L"usesRTSCTSFlowControl");
-            }
-            if(ob_is_defined(options, L"usesDTRDSRFlowControl")) {
-                port.usesDTRDSRFlowControl = ob_get_b(options, L"usesDTRDSRFlowControl");
-            }
-            if(ob_is_defined(options, L"usesDCDOutputFlowControl")) {
-                port.usesDCDOutputFlowControl = ob_get_b(options, L"usesDCDOutputFlowControl");
-            }
-            if(ob_is_defined(options, L"shouldEchoReceivedData")) {
-                port.shouldEchoReceivedData = ob_get_b(options, L"shouldEchoReceivedData");
-            }
-            if(ob_is_defined(options, L"RTS")) {
-                port.RTS = ob_get_b(options, L"RTS");
-            }
-            if(ob_is_defined(options, L"DTR")) {
-                port.DTR = ob_get_b(options, L"DTR");
-            }
-            if(ob_is_defined(options, L"baudRate")) {
-                port.baudRate = [NSNumber numberWithInt:ob_get_n(options, L"baudRate")];
-            }
-            if(ob_is_defined(options, L"numberOfStopBits")) {
-                port.numberOfStopBits = ob_get_n(options, L"numberOfStopBits");
-            }
-            CUTF8String stringValue;
-            if(ob_get_s(options, L"parity", &stringValue)) {
-                if(stringValue == (const uint8_t *)"none") {
-                    port.parity = ORSSerialPortParityNone;
-                }
-                if(stringValue == (const uint8_t *)"odd") {
-                    port.parity = ORSSerialPortParityOdd;
-                }
-                if(stringValue == (const uint8_t *)"even") {
-                    port.parity = ORSSerialPortParityEven;
-                }
-                
-            }
-            
-        }
-                
-        [port open];
-        
-        success = [port isOpen];
-        
-        PA_ObjectRef o = getPort(port);
-        ob_set_o(status, L"port", o);
-        
-    }/* port */
-
-    [path release];
     
     ob_set_b(status, L"success", success);
     PA_ReturnObject(params, status);
@@ -616,21 +594,24 @@ void SERIAL_CLOSE_PATH(PA_PluginParameters params) {
     
     bool success = false;
     
-    C_TEXT Param1_path;
-
-    Param1_path.fromParamAtIndex(pParams, 1);
-
-    NSString *path = Param1_path.copyUTF16String();
-    ORSSerialPort *port = [ORSSerialPort serialPortWithPath:path];
-    if((port) && (port.isOpen))
-    {
-        success = [port close];
-        
-        PA_ObjectRef o = getPort(port);
-        ob_set_o(status, L"port", o);
-    }
+    if(!PA_IsProcessDying()) {
     
-    [path release];
+        C_TEXT Param1_path;
+
+        Param1_path.fromParamAtIndex(pParams, 1);
+
+        NSString *path = Param1_path.copyUTF16String();
+        
+        ORSSerialPort *port = [ORSSerialPort existingPortWithPath:path];
+        
+        if((port) && (port.isOpen))
+        {
+            success = [port close];
+        }
+            
+        [path release];
+        
+    }
     
     ob_set_b(status, L"success", success);
     PA_ReturnObject(params, status);
@@ -640,24 +621,69 @@ void SERIAL_SEND_DATA(PA_PluginParameters params) {
 
     PackagePtr pParams = (PackagePtr)params->fParameters;
 
-    C_TEXT Param1_path;
+    PA_ObjectRef status = PA_CreateObject();
     
-    Param1_path.fromParamAtIndex(pParams, 1);
-
-    NSString *path = Param1_path.copyUTF16String();
-    ORSSerialPort *port = [ORSSerialPort serialPortWithPath:path];
-    if((port) && (port.isOpen))
-    {
-        PA_Handle h = *(PA_Handle *)(pParams[1]);
+    bool success = false;
+    
+    if(!PA_IsProcessDying()) {
         
-        if(h)
-        {
-            NSData *data = [[NSData alloc]initWithBytes:PA_LockHandle(h) length:PA_GetHandleSize(h)];
-            [port sendData:data];
-            [data release];
-            PA_UnlockHandle(h);
-        }
+        C_TEXT Param1_path;
+        
+        Param1_path.fromParamAtIndex(pParams, 1);
 
+        NSString *path = Param1_path.copyUTF16String();
+            
+        ORSSerialPort *port = [ORSSerialPort existingPortWithPath:path];
+        
+        if((port) && (port.isOpen))
+        {
+            PA_Handle h = *(PA_Handle *)(pParams[1]);
+            
+            if(h)
+            {
+                NSData *data = [[NSData alloc]initWithBytes:PA_LockHandle(h) length:PA_GetHandleSize(h)];
+                success = [port sendData:data];
+                [data release];
+                PA_UnlockHandle(h);
+            }
+
+        }
+        
+        [path release];
+        
     }
-    [path release];
+    
+    ob_set_b(status, L"success", success);
+    PA_ReturnObject(params, status);
 }
+
+@implementation ORSSerialPortHelper
+
+- (void)serialPort:(ORSSerialPort *)serialPort didReceiveData:(NSData *)data
+{
+    [SERIAL::SERIAL_PATH addObject:[serialPort path]];
+    [SERIAL::SERIAL_DATA addObject:data];
+    listenerLoopExecute();
+}
+
+- (void)serialPortWasRemovedFromSystem:(ORSSerialPort *)serialPort
+{
+    /* serialPortsWereDisconnected follows */
+}
+
+- (void)serialPortWasOpened:(ORSSerialPort *)serialPort
+{
+    NSLog(@"port opened:%@", [serialPort path]);
+}
+
+- (void)serialPortWasClosed:(ORSSerialPort *)serialPort
+{
+    NSLog(@"port closed:%@", [serialPort path]);
+}
+
+- (void)serialPort:(ORSSerialPort *)serialPort didEncounterError:(NSError *)error
+{
+    NSLog(@"%s %@ %@", __PRETTY_FUNCTION__, serialPort, error);
+}
+
+@end

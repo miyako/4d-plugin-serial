@@ -1,13 +1,13 @@
 {
 	"methods": {
 		"LIST": {
-			"timeStamp": "2022-02-04T07:03:17.408Z"
+			"timeStamp": "2022-02-04T23:57:29.404Z"
 		},
 		"serial_receive_method": {
-			"timeStamp": "2022-02-04T06:55:39.255Z"
-		},
-		"SEND": {
-			"timeStamp": "2022-02-04T07:14:53.740Z"
+			"timeStamp": "2022-02-05T00:03:02.648Z",
+			"attributes": {
+				"invisible": true
+			}
 		}
 	}
 }

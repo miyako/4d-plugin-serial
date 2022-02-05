@@ -220,7 +220,7 @@ static ORSSerialPortManager *sharedInstance = nil;
 - (void)retrieveAvailablePortsAndRegisterForChangeNotifications;
 {
 	IONotificationPortRef notificationPort = IONotificationPortCreate(kIOMasterPortDefault);
-	CFRunLoopAddSource(CFRunLoopGetMain()/*CFRunLoopGetCurrent()*/,
+	CFRunLoopAddSource(CFRunLoopGetCurrent(),
 					   IONotificationPortGetRunLoopSource(notificationPort),
 					   kCFRunLoopDefaultMode);
 	
@@ -262,7 +262,7 @@ static ORSSerialPortManager *sharedInstance = nil;
 	
 	// Also register for removal
 	IONotificationPortRef terminationNotificationPort = IONotificationPortCreate(kIOMasterPortDefault);
-	CFRunLoopAddSource(CFRunLoopGetMain()/*CFRunLoopGetCurrent()*/,
+	CFRunLoopAddSource(CFRunLoopGetCurrent(),
 					   IONotificationPortGetRunLoopSource(terminationNotificationPort),
 					   kCFRunLoopDefaultMode);
 	result = IOServiceAddMatchingNotification(terminationNotificationPort,

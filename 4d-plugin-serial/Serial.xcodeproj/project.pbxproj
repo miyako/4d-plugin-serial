@@ -12,20 +12,21 @@
 		18B684F906944F2000CC6A1E /* Flags.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B684F206944F2000CC6A1E /* Flags.h */; };
 		18B684FA06944F2000CC6A1E /* PrivateTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B684F306944F2000CC6A1E /* PrivateTypes.h */; };
 		18B684FB06944F2000CC6A1E /* PublicTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 18B684F406944F2000CC6A1E /* PublicTypes.h */; };
-		18B684FF06944F8800CC6A1E /* 4DPlugin-Serial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18B684FE06944F8800CC6A1E /* 4DPlugin-Serial.cpp */; };
+		18B684FF06944F8800CC6A1E /* 4DPlugin-Serial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18B684FE06944F8800CC6A1E /* 4DPlugin-Serial.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		8D01CCCA0486CAD60068D4B7 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		D120937F13534DCC00A72CAA /* 4DPlugin-Serial.h in Headers */ = {isa = PBXBuildFile; fileRef = D120937E13534DCC00A72CAA /* 4DPlugin-Serial.h */; };
 		D130064F12F02D9700702C0E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D130064E12F02D9700702C0E /* Cocoa.framework */; };
-		D13116A91A03ACB700DE1322 /* 4DPluginAPI.c in Sources */ = {isa = PBXBuildFile; fileRef = D13116A81A03ACB700DE1322 /* 4DPluginAPI.c */; settings = {COMPILER_FLAGS = "-Wno-multichar"; }; };
+		D13116A91A03ACB700DE1322 /* 4DPluginAPI.c in Sources */ = {isa = PBXBuildFile; fileRef = D13116A81A03ACB700DE1322 /* 4DPluginAPI.c */; settings = {COMPILER_FLAGS = "-w"; }; };
 		D134D4AC1A030BA0008D14EF /* manifest.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = D134D4A91A030B06008D14EF /* manifest.json */; };
+		D1827CBE27AD8F5A008E8B10 /* liborsserialport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1827CBD27AD8F5A008E8B10 /* liborsserialport.a */; };
+		D1827CC127AD8F64008E8B10 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1827CC027AD8F64008E8B10 /* IOKit.framework */; };
 		D1DB94C927ACEDF200B74036 /* C_LONGINT.h in Headers */ = {isa = PBXBuildFile; fileRef = D1DB94C427ACEDF200B74036 /* C_LONGINT.h */; };
 		D1DB94CA27ACEDF200B74036 /* C_TEXT.h in Headers */ = {isa = PBXBuildFile; fileRef = D1DB94C527ACEDF200B74036 /* C_TEXT.h */; };
 		D1DB94CB27ACEDF200B74036 /* C_TYPES.h in Headers */ = {isa = PBXBuildFile; fileRef = D1DB94C627ACEDF200B74036 /* C_TYPES.h */; };
-		D1DB94CC27ACEDF200B74036 /* C_TEXT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1DB94C727ACEDF200B74036 /* C_TEXT.cpp */; };
+		D1DB94CC27ACEDF200B74036 /* C_TEXT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1DB94C727ACEDF200B74036 /* C_TEXT.cpp */; settings = {COMPILER_FLAGS = "-w"; }; };
 		D1DB94CD27ACEDF200B74036 /* C_LONGINT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1DB94C827ACEDF200B74036 /* C_LONGINT.cpp */; };
 		D1DB94D027ACEFC100B74036 /* 4DPlugin-JSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D1DB94CE27ACEFC100B74036 /* 4DPlugin-JSON.cpp */; };
 		D1DB94D127ACEFC100B74036 /* 4DPlugin-JSON.h in Headers */ = {isa = PBXBuildFile; fileRef = D1DB94CF27ACEFC100B74036 /* 4DPlugin-JSON.h */; };
-		D1DB94D227AD02D900B74036 /* libORSSerialPort.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1DB94C327ACEB0B00B74036 /* libORSSerialPort.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,6 +57,8 @@
 		D13116A81A03ACB700DE1322 /* 4DPluginAPI.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = 4DPluginAPI.c; sourceTree = "<group>"; };
 		D134D4A91A030B06008D14EF /* manifest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
 		D14D10DD1A03A8A5008B3411 /* constants.xlf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = constants.xlf; sourceTree = "<group>"; };
+		D1827CBD27AD8F5A008E8B10 /* liborsserialport.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liborsserialport.a; path = a/liborsserialport.a; sourceTree = "<group>"; };
+		D1827CC027AD8F64008E8B10 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		D1DB94C327ACEB0B00B74036 /* libORSSerialPort.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libORSSerialPort.a; path = a/libORSSerialPort.a; sourceTree = "<group>"; };
 		D1DB94C427ACEDF200B74036 /* C_LONGINT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = C_LONGINT.h; path = "4D Plugin API/Classes/C_LONGINT.h"; sourceTree = "<group>"; };
 		D1DB94C527ACEDF200B74036 /* C_TEXT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = C_TEXT.h; path = "4D Plugin API/Classes/C_TEXT.h"; sourceTree = "<group>"; };
@@ -71,8 +74,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D1827CC127AD8F64008E8B10 /* IOKit.framework in Frameworks */,
+				D1827CBE27AD8F5A008E8B10 /* liborsserialport.a in Frameworks */,
 				D130064F12F02D9700702C0E /* Cocoa.framework in Frameworks */,
-				D1DB94D227AD02D900B74036 /* libORSSerialPort.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +163,8 @@
 		D16FBB3C22A4C07E008F0416 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D1827CC027AD8F64008E8B10 /* IOKit.framework */,
+				D1827CBD27AD8F5A008E8B10 /* liborsserialport.a */,
 				D1DB94C327ACEB0B00B74036 /* libORSSerialPort.a */,
 			);
 			name = Frameworks;
@@ -342,6 +348,7 @@
 					"$(PROJECT_DIR)/a",
 				);
 				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -392,6 +399,7 @@
 					"$(PROJECT_DIR)/a",
 				);
 				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -440,6 +448,7 @@
 					"$(PROJECT_DIR)/a",
 				);
 				LIBRARY_STYLE = Bundle;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -495,7 +504,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OBJROOT = "$(SRCROOT)/build";
 				SDKROOT = macosx;
 				SYMROOT = "$(SRCROOT)/test/Plugins";
@@ -540,7 +549,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OBJROOT = "$(SRCROOT)/build";
 				SDKROOT = macosx;
 				SYMROOT = "$(SRCROOT)/test/Plugins";
@@ -585,7 +594,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				SDKROOT = macosx;
 				SYMROOT = "$(SRCROOT)/test/Plugins";
 			};

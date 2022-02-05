@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1310"
+   LastUpgradeVersion = "1240"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D1DB94A227ACE95800B74036"
-               BuildableName = "libORSSerialPort.a"
-               BlueprintName = "ORSSerialPort"
-               ReferencedContainer = "container:ORSSerialPort.xcodeproj">
+               BlueprintIdentifier = "D1827C8727AD8C09008E8B10"
+               BuildableName = "liborsserialport.a"
+               BlueprintName = "orsserialport"
+               ReferencedContainer = "container:orsserialport.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -50,10 +50,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D1DB94A227ACE95800B74036"
-            BuildableName = "libORSSerialPort.a"
-            BlueprintName = "ORSSerialPort"
-            ReferencedContainer = "container:ORSSerialPort.xcodeproj">
+            BlueprintIdentifier = "D1827C8727AD8C09008E8B10"
+            BuildableName = "liborsserialport.a"
+            BlueprintName = "orsserialport"
+            ReferencedContainer = "container:orsserialport.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

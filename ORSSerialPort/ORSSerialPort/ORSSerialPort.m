@@ -573,10 +573,10 @@ static __strong NSMutableArray *allSerialPorts;
 	});
 	
 	dispatch_async(self.requestHandlingQueue, ^{
-		const void *bytes = [data bytes];
+		const unsigned char *bytes = (const unsigned char *)[data bytes];
 		for (NSUInteger i=0; i<[data length]; i++) {
 			
-			NSData *byte = [NSData dataWithBytesNoCopy:(void *)(bytes+i) length:1 freeWhenDone:NO];
+			NSData *byte = [NSData dataWithBytesNoCopy:(unsigned char *)(bytes+i) length:1 freeWhenDone:NO];
 			
 			// Check for packets we're listening for
 			for (ORSSerialPacketDescriptor *descriptor in self.packetDescriptorsAndBuffers)

@@ -19,7 +19,7 @@
         },
         {
             "theme": "Serial",
-            "syntax": "SERIAL SEND DATA(&T;&O)",
+            "syntax": "SERIAL Send data(&T;&O):J",
             "threadSafe": true
         }
     ]
