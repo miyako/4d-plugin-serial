@@ -118,12 +118,12 @@
 	},
 	"Sources/Methods/LIST.4dm": {
 		"startSelection": 7,
-		"endSelection": 0,
+		"endSelection": 7,
 		"firstSelectedLine": 20,
-		"lastSelectedLine": 0,
+		"lastSelectedLine": 20,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-05T00:04:27.958Z"
+		"stamp": "2022-02-05T00:08:22.341Z"
 	},
 	"Sources/Methods/serial_receive_method.4dm": {
 		"startSelection": 0,
@@ -132,6 +132,6 @@
 		"lastSelectedLine": 0,
 		"folding": [],
 		"bookmarks": [],
-		"stamp": "2022-02-05T00:03:02.649Z"
+		"stamp": "2022-02-05T00:08:22.341Z"
 	}
 }
