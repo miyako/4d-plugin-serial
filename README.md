@@ -8,6 +8,14 @@
 
 ただし，シリアルポート付け外しの通知を受け取るため，``CFRunLoopGetCurrent``を``CFRunLoopGetMain``に書き換えてビルドしました。
 
+## 用途
+
+標準コマンドの``RECEIVE BUFFER``は非Unicodeモードの遺物であり，BLOBに対応していません。
+
+一方，``RECEIVE PACKET``はバックグランドで「待ち受け」することができません。
+
+プラグインは，スリープの開始と解除・シリアルポートの取り外しと取り付けに反応し，バイナリデータを扱うことができます。
+
 ## SERIAL Get available ports
 
 ```4d
@@ -72,18 +80,6 @@ status:=SERIAL Send data(path)
 |-|-|-|
 |status|Object||
 |status.success|Boolean||
-
-## Discussion
-
-The native command ``RECEIVE BUFFER`` does not support BLOB.
-
-The native command ``RECEIVE PACKET`` does not listen indefinitely.
-
-Neither native commands do not take advantage of newer multiprocessing (Grand Central Dispatch).
-
-Neither native commands handle sleep events.
-
-ORSSerialPort is a simple, modern, serial port library.
 
 ## 動作検証
 
