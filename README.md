@@ -59,6 +59,14 @@ status:=SERIAL Open path(path{;options})
 
 <img width="852" alt="process" src="https://user-images.githubusercontent.com/1725068/152618331-55247ca8-ac9f-42e9-881d-3050dacec386.png">
 
+シリアル通信を受信すると，下記のパラメーターでコールバックメソッドが実行されます。
+
+```4d
+#DECLARE($path : Text; $data : Blob)
+
+TRACE
+```
+
 ## SERIAL Close path
 
 ```4d
