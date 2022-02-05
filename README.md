@@ -119,8 +119,6 @@ status:=SERIAL Send data(path)
 
 |USB⇄RS-232Cコンバーター|チップ|macOS|4D|対応|
 |-|-|-|-|:-:|
-|[REX-USB60F](http://www.ratocsystems.com/products/subpage/convert/usb60f_siyou.html)|[FTDI](https://ftdichip.com/drivers/vcp-drivers/)|Catalina|17||
-||||18||
-||||19||
+|[REX-USB60F](http://www.ratocsystems.com/products/subpage/convert/usb60f_siyou.html)|[FTDI](https://ftdichip.com/drivers/vcp-drivers/)|Catalina|19|OK|
 |||Monterey x86_64|19||
 |||Monterey arm64|19||
