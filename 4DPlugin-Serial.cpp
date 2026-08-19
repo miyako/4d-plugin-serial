@@ -10,6 +10,9 @@
 
 #include "4DPlugin-Serial.h"
 
+#include <cmath>
+#include <climits>
+
 ORSSerialPortObserver *serialPortObserver = nil;
 
 NSArray *availablePorts;
@@ -48,7 +51,24 @@ static void *ORSSerialPortAvailablePortsContext = &ORSSerialPortAvailablePortsCo
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
-        
+
+    /* Release the ORSSerialPortHelper delegates created in -init for ports
+       that were already present at startup and never went through a
+       connect/disconnect cycle (those are already released in
+       serialPortsWereDisconnected:). delegate is not a retaining property,
+       so this observer is the only owner. */
+    NSArray *availablePorts = [[ORSSerialPortManager sharedSerialPortManager]availablePorts];
+
+    for(NSUInteger i = 0; i < [availablePorts count];++i)
+    {
+        ORSSerialPort *port = [availablePorts objectAtIndex:i];
+        if(port.delegate)
+        {
+            [port.delegate release];
+            port.delegate = nil;
+        }
+    }
+
     [super dealloc];
 }
 
@@ -263,10 +283,10 @@ void listenerLoop() {
 
 void listenerLoopStart() {
 
+    std::lock_guard<std::mutex> lock(globalMutex1);
+
     if(!SERIAL::METHOD_PROCESS_ID)
     {
-        std::lock_guard<std::mutex> lock(globalMutex1);
-
         SERIAL::METHOD_PROCESS_ID = PA_NewProcess((void *)listenerLoop,
                                               SERIAL::MONITOR_PROCESS_STACK_SIZE,
                                               SERIAL::MONITOR_PROCESS_NAME);
@@ -275,11 +295,13 @@ void listenerLoopStart() {
 
 void listenerLoopFinish() {
 
+    std::lock_guard<std::mutex> lock1(globalMutex1);
+
     if(SERIAL::METHOD_PROCESS_ID)
     {
         if(1)
         {
-            std::lock_guard<std::mutex> lock(globalMutex3);
+            std::lock_guard<std::mutex> lock3(globalMutex3);
 
             SERIAL::PROCESS_SHOULD_TERMINATE = true;
         }
@@ -288,7 +310,7 @@ void listenerLoopFinish() {
 
         if(1)
         {
-            std::lock_guard<std::mutex> lock(globalMutex4);
+            std::lock_guard<std::mutex> lock4(globalMutex4);
 
             SERIAL::PROCESS_SHOULD_RESUME = true;
         }
@@ -315,8 +337,19 @@ void listenerLoopExecute() {
 
 void listenerLoopExecuteMethod() {
     
-    NSString *path = [SERIAL::SERIAL_PATH objectAtIndex:0];
-    NSData *data = [SERIAL::SERIAL_DATA objectAtIndex:0];
+    NSString *path = nil;
+    NSData *data = nil;
+
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex);
+
+        path = [[SERIAL::SERIAL_PATH objectAtIndex:0] retain];
+        data = [[SERIAL::SERIAL_DATA objectAtIndex:0] retain];
+
+        [SERIAL::SERIAL_PATH removeObjectAtIndex:0];
+        [SERIAL::SERIAL_DATA removeObjectAtIndex:0];
+    }
     
     method_id_t methodId = PA_GetMethodID((PA_Unichar *)SERIAL::LISTENER_METHOD.getUTF16StringPtr());
     
@@ -362,9 +395,9 @@ void listenerLoopExecuteMethod() {
         PA_ClearVariable(&params[1]);
         PA_ClearVariable(&params[2]);
     }
-    
-    [SERIAL::SERIAL_PATH removeObjectAtIndex:0];
-    [SERIAL::SERIAL_DATA removeObjectAtIndex:0];
+
+    [path release];
+    [data release];
 }
 
 static void OnStartup()
@@ -546,13 +579,21 @@ void SERIAL_OPEN_PATH(PA_PluginParameters params) {
                     port.DTR = ob_get_b(options, L"DTR");
                 }
                 if(ob_is_defined(options, L"baudRate")) {
-                    port.baudRate = [NSNumber numberWithInt:ob_get_n(options, L"baudRate")];
+                    double d = ob_get_n(options, L"baudRate");
+                    if(std::isfinite(d) && d >= 0 && d <= (double)INT_MAX) {
+                        port.baudRate = [NSNumber numberWithInt:(int)d];
+                    }
                 }
                 if(ob_is_defined(options, L"numberOfStopBits")) {
-                    port.numberOfStopBits = ob_get_n(options, L"numberOfStopBits");
+                    double d = ob_get_n(options, L"numberOfStopBits");
+                    /* real serial hardware only ever uses 1 or 2 stop bits;
+                       255 is a generous, but still bounded, upper limit */
+                    if(std::isfinite(d) && d >= 0 && d <= 255) {
+                        port.numberOfStopBits = (NSUInteger)d;
+                    }
                 }
                 CUTF8String stringValue;
-                if(ob_get_s(options, L"parity", &stringValue)) {
+                if(ob_get_a(options, L"parity", &stringValue)) {
                     if(stringValue == (const uint8_t *)"none") {
                         port.parity = ORSSerialPortParityNone;
                     }
@@ -661,8 +702,13 @@ void SERIAL_SEND_DATA(PA_PluginParameters params) {
 
 - (void)serialPort:(ORSSerialPort *)serialPort didReceiveData:(NSData *)data
 {
-    [SERIAL::SERIAL_PATH addObject:[serialPort path]];
-    [SERIAL::SERIAL_DATA addObject:data];
+    if(1)
+    {
+        std::lock_guard<std::mutex> lock(globalMutex);
+
+        [SERIAL::SERIAL_PATH addObject:[serialPort path]];
+        [SERIAL::SERIAL_DATA addObject:data];
+    }
     listenerLoopExecute();
 }
 
