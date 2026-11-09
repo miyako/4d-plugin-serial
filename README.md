@@ -8,6 +8,12 @@
 
 ただし，シリアルポート付け外しの通知を受け取るため，``CFRunLoopGetCurrent``を``CFRunLoopGetMain``に書き換えてビルドしました。
 
+## Workflows
+
+`Bump version` updates source versions only (`patch`/`minor`/`major`, default
+`patch`). Run `Build` separately with GitHub's built-in ref selector; it has no
+custom inputs. See [workflow safety and recovery](.github/README.md).
+
 ## 用途
 
 標準コマンドの``RECEIVE BUFFER``は非Unicodeモードの遺物であり，BLOBに対応していません。
