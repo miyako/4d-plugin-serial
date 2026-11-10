@@ -357,7 +357,7 @@ void listenerLoopExecuteMethod() {
     {
         PA_Variable    params[2];
         params[0] = PA_CreateVariable(eVK_Unistring);
-        params[1] = PA_CreateVariable(eVK_Blob);
+        params[1] = PA_CreateVariable(eVK_Undefined);
 
         C_TEXT _path;
         _path.setUTF16String(path);
@@ -366,7 +366,8 @@ void listenerLoopExecuteMethod() {
         
         PA_SetBlobVariable(&params[1], (void *)[data bytes], [data length]);
         
-        PA_ExecuteMethodByID(methodId, params, 2);
+        PA_Variable result = PA_ExecuteMethodByID(methodId, params, 2);
+        PA_ClearVariable(&result);
         
         PA_ClearVariable(&params[0]);
         PA_ClearVariable(&params[1]);
@@ -376,11 +377,11 @@ void listenerLoopExecuteMethod() {
         PA_Variable    params[3];
         
         params[0] = PA_CreateVariable(eVK_Unistring);
-        PA_Unistring method = PA_CreateUnistring((PA_Unichar *)SERIAL::LISTENER_METHOD.getUTF16StringPtr());
-        PA_SetStringVariable(&params[0], &method);
+        PA_SetUnistring(&params[0].uValue.fString,
+                        (PA_Unichar *)SERIAL::LISTENER_METHOD.getUTF16StringPtr());
         
         params[1] = PA_CreateVariable(eVK_Unistring);
-        params[2] = PA_CreateVariable(eVK_Blob);
+        params[2] = PA_CreateVariable(eVK_Undefined);
 
         C_TEXT _path;
         _path.setUTF16String(path);
@@ -389,7 +390,8 @@ void listenerLoopExecuteMethod() {
         
         PA_SetBlobVariable(&params[2], (void *)[data bytes], [data length]);
         
-        PA_ExecuteCommandByID(1007, params, 3);
+        PA_Variable result = PA_ExecuteCommandByID(1007, params, 3);
+        PA_ClearVariable(&result);
         
         PA_ClearVariable(&params[0]);
         PA_ClearVariable(&params[1]);

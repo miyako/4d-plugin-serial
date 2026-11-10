@@ -84,10 +84,9 @@ void ob_set_s(PA_ObjectRef obj, const char *_key, const char *_value) {
 #endif
         
         PA_Unistring key = PA_CreateUnistring((PA_Unichar *)u16k.c_str());
-        PA_Unistring value = PA_CreateUnistring((PA_Unichar *)u16v.c_str());
         
         PA_Variable v = PA_CreateVariable(eVK_Unistring);
-        PA_SetStringVariable(&v, &value);
+        PA_SetUnistring(&v.uValue.fString, (PA_Unichar *)u16v.c_str());
         PA_SetObjectProperty(obj, &key, v);
         
         PA_DisposeUnistring(&key);
@@ -134,9 +133,8 @@ void ob_set_s(PA_ObjectRef obj, const wchar_t *_key, const char *_value) {
             }
 #endif
             PA_Unistring key = PA_CreateUnistring((PA_Unichar *)ukey.c_str());
-            PA_Unistring value = PA_CreateUnistring((PA_Unichar *)u16.c_str());
             
-            PA_SetStringVariable(&v, &value);
+            PA_SetUnistring(&v.uValue.fString, (PA_Unichar *)u16.c_str());
             PA_SetObjectProperty(obj, &key, v);
             
             PA_DisposeUnistring(&key);
@@ -158,9 +156,8 @@ void ob_set_a(PA_ObjectRef obj, const wchar_t *_key, const wchar_t *_value) {
             json_wconv(_value, &uvalue);
             
             PA_Unistring key = PA_CreateUnistring((PA_Unichar *)ukey.c_str());
-            PA_Unistring value = PA_CreateUnistring((PA_Unichar *)uvalue.c_str());
             
-            PA_SetStringVariable(&v, &value);
+            PA_SetUnistring(&v.uValue.fString, (PA_Unichar *)uvalue.c_str());
             PA_SetObjectProperty(obj, &key, v);
             
             PA_DisposeUnistring(&key);
@@ -185,9 +182,8 @@ void ob_set_a(PA_ObjectRef obj, const wchar_t *_key, const CUTF16String *_value)
         json_wconv(_key, &ukey);
 
         PA_Unistring key = PA_CreateUnistring((PA_Unichar *)ukey.c_str());
-        PA_Unistring value = PA_CreateUnistring((PA_Unichar *)_value->c_str());
 
-        PA_SetStringVariable(&v, &value);
+        PA_SetUnistring(&v.uValue.fString, (PA_Unichar *)_value->c_str());
         PA_SetObjectProperty(obj, &key, v);
 
         PA_DisposeUnistring(&key);
@@ -488,6 +484,7 @@ bool ob_get_a(PA_ObjectRef obj, const wchar_t *_key, CUTF8String *value) {
                 }
 #endif
             }
+            PA_ClearVariable(&v);
         }
         
         PA_DisposeUnistring(&key);
@@ -513,6 +510,7 @@ bool ob_get_b(PA_ObjectRef obj, const wchar_t *_key) {
             {
                 value = PA_GetBooleanVariable(v);
             }
+            PA_ClearVariable(&v);
         }
         
         PA_DisposeUnistring(&key);
@@ -538,6 +536,7 @@ double ob_get_n(PA_ObjectRef obj, const wchar_t *_key) {
             {
                 value = PA_GetRealVariable(v);
             }
+            PA_ClearVariable(&v);
         }
         
         PA_DisposeUnistring(&key);
@@ -561,7 +560,10 @@ PA_CollectionRef ob_get_c(PA_ObjectRef obj, const wchar_t *_key) {
             PA_Variable v = PA_GetObjectProperty(obj, &key);
             if(PA_GetVariableKind(v) == eVK_Collection)
             {
+                // Transfer the returned variable's owner to the caller.
                 value = PA_GetCollectionVariable(v);
+            }else{
+                PA_ClearVariable(&v);
             }
         }
         

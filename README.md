@@ -14,6 +14,14 @@
 `patch`). Run `Build` separately with GitHub's built-in ref selector; it has no
 custom inputs. See [workflow safety and recovery](.github/README.md).
 
+## Ownership regressions
+
+Run `PYTHONDONTWRITEBYTECODE=1 python3 tests/test_ownership.py` on macOS with
+Xcode command-line tools. The tests compile the actual plugin and unchanged
+bundled SDK with ASan/UBSan against a synthetic engine, without accessing serial
+devices or building/signing/packaging a plugin bundle.
+See [ownership contracts and audit boundaries](tests/ownership.md).
+
 ## 用途
 
 標準コマンドの``RECEIVE BUFFER``は非Unicodeモードの遺物であり，BLOBに対応していません。
