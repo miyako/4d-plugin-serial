@@ -307,7 +307,19 @@ class NativeWorkflowContractTests(unittest.TestCase):
             path.name: yaml.load(path.read_text(), Loader=yaml.BaseLoader)
             for path in WORKFLOW.parent.glob("*.yml")
         }
-        self.assertEqual(set(workflows), {"release.yml", "bump-version.yml"})
+        self.assertEqual(set(workflows),
+                         {"release.yml", "bump-version.yml", "ownership.yml"})
+        ownership = workflows.pop("ownership.yml")
+        self.assertEqual(set(ownership["on"]), {"pull_request", "push"})
+        self.assertEqual(ownership["on"]["push"]["branches"], ["master"])
+        self.assertEqual(ownership["permissions"], {"contents": "read"})
+        self.assertEqual(set(ownership["jobs"]), {"ownership"})
+        self.assertEqual(ownership["jobs"]["ownership"]["runs-on"], "macos-latest")
+        self.assertEqual(ownership["jobs"]["ownership"]["steps"], [
+            {"uses": "actions/checkout@v4"},
+            {"name": "Actual-source SDK boundary regressions",
+             "run": "PYTHONDONTWRITEBYTECODE=1 python3 tests/test_ownership.py"},
+        ])
         build, bump = workflows["release.yml"], workflows["bump-version.yml"]
         self.assertEqual(build["name"], "Build")
         self.assertEqual(build["on"], {"workflow_dispatch": ""})
